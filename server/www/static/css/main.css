@@ -1,0 +1,122 @@
+html {
+  overflow-y: auto;
+  overflow-x: hidden; 
+  height: 100%;
+  width: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+.headerbg{
+  background-color: #7cb5ec;/*#009688;*/
+  width: 100vw;
+  left: calc(-50vw + 50%);
+  padding-left: calc(+50vw - 50%);
+  padding-right: calc(+50vw - 50%);
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.headertitle {
+  margin-bottom:  5px;
+  margin-top: 15px;
+}
+
+.img-header{
+  max-height: 57px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-right: 10px;
+  padding: 3px;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.btn-margin-sm {
+  margin-top: 3px !important; 
+}
+
+.side-padding-sm {
+  padding-right: 0px;
+  padding-left: 4px;
+}
+
+.input-group-addon {
+  min-width: 40px;
+}
+
+.alert {
+  margin-bottom: 10px !important;
+}
+
+.snackbar {
+  background-color: #f44336 !important;
+  color: rgba(255, 255, 255, 0.84) !important;
+  font-weight: bold;
+}
+
+.btn.btn-sm {
+  padding: 5px 10px !important;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+/* Extra small input-module */ 
+.input-xs {
+  height: 22px;
+  font-size: 10px;
+  padding: 2px 4px;
+  line-height: 1.5;
+  border-radius: 2px;
+}
+
+/* Prefixes are necessary for priority over bootstrap classes */
+.panel-body-menu {
+  padding-left: 5px;
+  padding-right: 0;
+  padding-top: 0;
+}
+
+.panel-group
+.panel.panel-menu {
+  margin-top: 0;
+  border-radius: 0;
+}
+
+.panel-group
+.panel-heading-menu {
+  padding: 7px 15px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+@media (max-width: 992px) {
+  .form-group {
+    margin-bottom: 0px !important;
+  }
+}
+
+/* Show a scrollbar inside collapsible menu-items to not exceed Screen-size */
+@media (min-width: 992px) {
+  .form-group {
+    margin-bottom: 5px !important;
+  }
+}
+
+/* Fix recursive panels margin beeing removed */
+*:not(.panel-group) > .panel {
+  margin-bottom: 15px;
+}
+
+.btn {
+  margin: 0px 0px;
+}
+
+.panel-title {
+  font-size:24px !important;
+}

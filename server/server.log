@@ -1,0 +1,11 @@
+2015-11-25 15:36:03,685 [Threa] [INFO ] webInterface : Starting Cherrypy-Engine
+2015-11-25 15:36:03,686 [Threa] [INFO ] error : [25/Nov/2015:15:36:03] ENGINE Bus STARTING
+2015-11-25 15:36:03,686 [Threa] [INFO ] error : [25/Nov/2015:15:36:03] ENGINE Started monitor thread '_TimeoutMonitor'.
+2015-11-25 15:36:03,791 [Threa] [INFO ] error : [25/Nov/2015:15:36:03] ENGINE Serving on https://0.0.0.0:8080
+2015-11-25 15:36:03,791 [Threa] [INFO ] error : [25/Nov/2015:15:36:03] ENGINE Bus STARTED
+2015-11-25 15:36:49,140 [MainT] [INFO ] error : [25/Nov/2015:15:36:49] ENGINE Bus STOPPING
+2015-11-25 15:36:49,141 [MainT] [INFO ] error : [25/Nov/2015:15:36:49] ENGINE HTTP Server cherrypy._cpwsgi_server.CPWSGIServer(('0.0.0.0', 8080)) shut down
+2015-11-25 15:36:49,141 [MainT] [INFO ] error : [25/Nov/2015:15:36:49] ENGINE Stopped thread '_TimeoutMonitor'.
+2015-11-25 15:36:49,141 [MainT] [INFO ] error : [25/Nov/2015:15:36:49] ENGINE Bus STOPPED
+2015-11-25 15:36:49,141 [MainT] [INFO ] error : [25/Nov/2015:15:36:49] ENGINE Bus EXITING
+2015-11-25 15:36:49,141 [MainT] [INFO ] error : [25/Nov/2015:15:36:49] ENGINE Bus EXITED
