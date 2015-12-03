@@ -101,9 +101,9 @@ void tx_value(uint8_t value){
 		nanosleep((const struct timespec[]){{0,1110000L}}, NULL);
 	}else{
 		set_pin(17);
-		nanosleep((const struct timespec[]){{0,370000L}}, NULL);
-		clr_pin(17);
 		nanosleep((const struct timespec[]){{0,1110000L}}, NULL);
+		clr_pin(17);
+		nanosleep((const struct timespec[]){{0,370000L}}, NULL);
 	}
 }
 
