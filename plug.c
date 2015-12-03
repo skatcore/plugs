@@ -157,19 +157,11 @@ int main(int argc, char** argv)
 	uint8_t hc = atoi(argv[1]);
 	uint8_t sc = atoi(argv[2]);
 	uint8_t status = atoi(argv[3]);
-	
-	printf("\nValues: HouseCode: %d, SwitchCode: %d, Status: %d \n",hc,sc,status);
-	
-	printf("Debug: HC: %d%d%d%d%d  HC: %d\n",((hc>>4)&0x1),((hc>>3)&0x1),((hc>>2)&0x1),((hc>>1)&0x1),((hc)&0x1),hc);
-	printf("Debug: SC: %d%d%d%d%d  SC: %d\n",((sc>>4)&0x1),((sc>>3)&0x1),((sc>>2)&0x1),((sc>>1)&0x1),((sc)&0x1),sc);
-	printf("Debug: status: %d\n",status);
-	printf("Debug: !status: %d\n", !status);
-	
-	
+		
     INP_GPIO(17); // must use INP_GPIO before we can use OUT_GPIO
     OUT_GPIO(17);
     
-	for(uint8_t i=0;i<10;i++){
+	for(uint8_t i=0;i<4;i++){
 		send_pc(hc,sc);
 		send_status(status);
 		send_sync();
