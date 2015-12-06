@@ -1,4 +1,10 @@
-Task 4.3: Application
+Task 4.2: Plug-Controller
+======================
+
+Compile using
+gcc plug.c -o plug
+
+Task 4.3: App
 ======================
 
 Due to better portability and availability on more devices, we opted to develop the communicator client as a web-Application.
