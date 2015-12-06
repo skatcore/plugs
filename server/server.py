@@ -131,7 +131,7 @@ class cIndex(object):
 
     @cherrypy.expose
     def addSwitch(self, name, switchid):
-        if name == "" or switchid = "":
+        if name == "" or switchid == "":
             return "Invalid input."
         self.switches[switchid] = {'name': name, 'active': 0}
 
