@@ -1,0 +1,21 @@
+Task 4.3: Application
+======================
+
+Due to better portability and availability on more devices, we opted to develop the communicator client as a web-Application.
+Once the server has been started on the raspberry, all devices capable of running a browser can access the switches.
+
+Its developed in python 3 with cherrypy. Simply run 
+sudo pip install cherrypy
+and then execute server.py.
+
+The webinterface can be accessed by pointing your browser to https://<raspberry-ip>:8080
+https needs to be explicitly specified, since its not possible to serve both http and https on the same port using cherrypy.
+
+The webApp uses the HTTP-Digest algorithm for login, and will ask for credentials once you load it.
+The currently set login is:
+user: comsyslab
+pw: SecureAF
+
+The server expects the corresponding plug executable to be in the same directory as server.py, so make sure to copy it over once you've built it.
+
+All settings of the server (including switches etc) are stored in settings.json.

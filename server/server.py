@@ -11,6 +11,7 @@ from cherrypy.lib import auth_digest
 import logging
 import json
 from threading import Thread
+import time
 
 # Add some headers to ask browser for more secure page rendering
 # https://cherrypy.readthedocs.org/en/3.3.0/progguide/security.html
@@ -41,7 +42,8 @@ conf = {
         'server.socket_port': 8080,
         'server.ssl_module':'builtin',
         'server.ssl_certificate': os.path.abspath("certs/server.crt"),
-        'server.ssl_private_key': os.path.abspath("certs/server.key")
+        'server.ssl_private_key': os.path.abspath("certs/server.key"),
+        'tools.encode.text_only': False
     },
     '/': {
         'tools.secureheaders.on': True,
@@ -55,9 +57,6 @@ conf = {
         'tools.auth_digest.on': False,
         'tools.staticdir.on': True,
         'tools.staticdir.dir': 'static/',
-        'tools.caching.on': True,
-        'tools.caching.delay': 3600,
-        'tools.caching.antistampede_timeout': 1,
         'tools.gzip.on': True,
         'tools.gzip.mime_types': ['text/*', 'application/*']
     }
@@ -98,14 +97,53 @@ def check_cherrypy():
 """
 class cIndex(object):
 
-    switches = []
+    switches = {}
+    executor = 'plug'
+    housecode = '20'
 
     def __init__(self):
-        self.addSwitch('Tester', 1101)
+        self.load()
+
+    def load(self):
+        try:
+            with open('settings.json', "r+") as jsonFile:
+                settings = json.loads(jsonFile.read())
+                self.switches = settings['switches']
+                self.executor = settings['exec']
+                self.housecode = settings['housecode']
+        except IOError as e:
+            logging.warn("No config file could be found.")
+        except KeyError as e:
+            logging.warn('One or more setting couldn\'t be found.')
+        except ValueError as e:
+            logging.error(e)
+            logging.error("Syntax Error in config File. Will be overwritten on exit.")
+
+    def save(self):
+        logging.info('Saving...')
+        vals = {
+            'switches': self.switches,
+            'housecode': self.housecode,
+            'exec': self.executor
+        }
+        with open('settings.json', 'w') as outfile:
+            json.dump(vals, outfile, indent=4, sort_keys=True)
 
     @cherrypy.expose
     def addSwitch(self, name, switchid):
-        self.switches.append({'name': name, 'id': switchid})
+        if name == "" or switchid = "":
+            return "Invalid input."
+        self.switches[switchid] = {'name': name, 'active': 0}
+
+    @cherrypy.expose
+    def setSwitch(self, switchid, active):
+        if not switchid in self.switches:
+            return 'Invalid id.'
+        self.switches[switchid]['active'] = int(active)
+        call = './' + self.executor + ' ' + self.housecode + ' ' + switchid + ' ' + str(self.switches[switchid]['active'])
+        logging.debug('Executing: ' + call)
+        os.system(call)
+        return "1"
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -125,11 +163,7 @@ def webInterface():
 
 def shutdown():
     # shut webinterface down
-    logging.info("Terminating queueThread")
-    modules.gStations.queueThread.terminate()
-    modules.gStations.measurement.watchDog.stop()
-    logging.info("Saving Settings")
-    settings.write("config/settings.json")
+    gIndex.save()
     logging.info("Shutting down Cherrypy-Engine")
     cherrypy.engine.exit()
 
