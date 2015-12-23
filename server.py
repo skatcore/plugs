@@ -20,9 +20,7 @@ def secureheaders():
     headers['X-Frame-Options'] = 'DENY'
     headers['X-XSS-Protection'] = '1; mode=block'
     headers['Content-Security-Policy'] = "default-src='self'"
-    if (cherrypy.server.ssl_certificate != None and cherrypy.server.ssl_private_key != None):
-        headers['Strict-Transport-Security'] = 'max-age=31536000' # one year
-
+    
 cherrypy.tools.secureheaders = \
     cherrypy.Tool('before_finalize', secureheaders, priority=60)
 
@@ -40,17 +38,11 @@ conf = {
         'engine.autoreload.frequency': 2,
         'server.socket_host': '0.0.0.0',  # Listen on any interface
         'server.socket_port': 8080,
-        'server.ssl_module':'builtin',
-        'server.ssl_certificate': os.path.abspath("certs/server.crt"),
-        'server.ssl_private_key': os.path.abspath("certs/server.key"),
         'tools.encode.text_only': False
     },
     '/': {
-        'tools.secureheaders.on': True,
-        'tools.auth_digest.on': True,
-        'tools.auth_digest.realm': 'localhost',
-        'tools.auth_digest.get_ha1': auth_digest.get_ha1_dict_plain(Users),
-        'tools.auth_digest.key': 'a5w8zc718d6c69fb',
+        'tools.secureheaders.on': False,
+        'tools.auth_digest.on': False,
         'tools.staticdir.root': os.path.abspath("www/")
     },
     '/static': {
@@ -83,7 +75,7 @@ def check_cherrypy():
     import cherrypy
     versParts = cherrypy.__version__.split('.')
     versParts = [int(x) for x in versParts]
-    if versParts[0] < 3 or versParts[1] < 6:
+    if versParts[0] < 3 and versParts[1] < 6:
         logging.info("Cherrypy is older then version 3.6. Please install version 3.6.0 or equivalent. (Currently: " + cherrypy.__version__ + ")")
         return False
     if versParts[0] > 3:
