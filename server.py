@@ -20,11 +20,13 @@ def secureheaders():
     headers['X-Frame-Options'] = 'DENY'
     headers['X-XSS-Protection'] = '1; mode=block'
     headers['Content-Security-Policy'] = "default-src='self'"
+    #if (cherrypy.server.ssl_certificate != None and cherrypy.server.ssl_private_key != None):
+    #    headers['Strict-Transport-Security'] = 'max-age=31536000' # one year
     
 cherrypy.tools.secureheaders = \
     cherrypy.Tool('before_finalize', secureheaders, priority=60)
 
-Users = {'comsyslab': 'SecureAF'}
+Users = {'volker': 'volker'}
 
 cherrypy.log.screen = False
 """
@@ -38,11 +40,19 @@ conf = {
         'engine.autoreload.frequency': 2,
         'server.socket_host': '0.0.0.0',  # Listen on any interface
         'server.socket_port': 8080,
+        #'server.ssl_module':'builtin',
+        #'server.ssl_certificate': os.path.abspath("certs/server.crt"),
+        #'server.ssl_private_key': os.path.abspath("certs/server.key"),
         'tools.encode.text_only': False
     },
     '/': {
-        'tools.secureheaders.on': False,
-        'tools.auth_digest.on': False,
+        #'tools.secureheaders.on': True,
+        #'tools.auth_digest.on': True,
+        #'tools.auth_digest.realm': 'localhost',
+        #'tools.auth_digest.get_ha1': auth_digest.get_ha1_dict_plain(Users),
+        #'tools.auth_digest.key': 'a5w8zc718d6c69fb',
+        'tools.secureheaders.on': False, #remove if using https
+        'tools.auth_digest.on': False, #remove if using https
         'tools.staticdir.root': os.path.abspath("www/")
     },
     '/static': {
