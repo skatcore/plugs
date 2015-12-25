@@ -12,6 +12,7 @@ import logging
 import json
 from threading import Thread
 import time
+from bitstring import BitArray
 
 # Add some headers to ask browser for more secure page rendering
 # https://cherrypy.readthedocs.org/en/3.3.0/progguide/security.html
@@ -135,7 +136,8 @@ class cIndex(object):
     def addSwitch(self, name, switchid):
         if name == "" or switchid == "":
             return "Invalid input."
-        self.switches[switchid] = {'name': name, 'active': 0}
+        b = BitArray(switchid)
+        self.switches[b.uint] = {'name': name, 'active': 0}
 
     @cherrypy.expose
     def setSwitch(self, switchid, active):
