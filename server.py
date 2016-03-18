@@ -147,8 +147,8 @@ class cIndex(object):
         logging.debug('Executing: ' + call)
 
         # Send command multiple times to achieve a higher success rate (noise on radio frequency).
-        for unused in range(0, 4):
-            os.system(call)
+        # for unused in range(0, 4):
+        os.system(call)
         return "1"
 
     @cherrypy.expose
