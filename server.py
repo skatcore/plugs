@@ -102,7 +102,7 @@ class cIndex(object):
 
     switches = {}
     executor = 'plug'
-    housecode = '20'
+    housecode = '31'
 
     def __init__(self):
         self.load()
