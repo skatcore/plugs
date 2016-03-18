@@ -1,18 +1,18 @@
 #!/usr/bin/python
 
+import json
+import logging
 import os
 import os.path
 import sys
-import logging
-from logging import handlers
-import cherrypy
-from cherrypy.lib.static import serve_file
-from cherrypy.lib import auth_digest
-import logging
-import json
-from threading import Thread
 import time
+from logging import handlers
+from threading import Thread
+
+import cherrypy
 from bitstring import BitArray
+from cherrypy.lib.static import serve_file
+
 
 # Add some headers to ask browser for more secure page rendering
 # https://cherrypy.readthedocs.org/en/3.3.0/progguide/security.html
@@ -77,6 +77,7 @@ def check_python():
     return python_Version.major >= 3 and python_Version.minor >= 4
 
 
+# noinspection PyDeprecation
 def check_cherrypy():
     import importlib
     cp_loader = importlib.find_loader('cherrypy')
@@ -115,9 +116,9 @@ class cIndex(object):
                 self.executor = settings['exec']
                 self.housecode = settings['housecode']
         except IOError as e:
-            logging.warn("No config file could be found.")
+            logging.warning("No config file could be found.")
         except KeyError as e:
-            logging.warn('One or more setting couldn\'t be found.')
+            logging.warning('One or more setting couldn\'t be found.')
         except ValueError as e:
             logging.error(e)
             logging.error("Syntax Error in config File. Will be overwritten on exit.")
@@ -207,7 +208,6 @@ if __name__ == '__main__':
     gIndex = cIndex()
 
     # Suppress cherrypy's logging
-    #cherrypy.log.error_log.propagate = False
     cherrypy.log.access_log.propagate = False
 
     logging.getLogger().setLevel(logging.DEBUG)
