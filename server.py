@@ -136,10 +136,7 @@ class cIndex(object):
     def addSwitch(self, name, switchid):
         if name == "" or switchid == "":
             return "Invalid input."
-        try:
-            self.switches[int(switchid, 2)] = {'name': name, 'active': 0}
-        except ValueError:
-            logging.error("Decimal input not allowed here.")
+        self.switches[switchid] = {'name': name, 'active': 0}
 
 
     @cherrypy.expose
