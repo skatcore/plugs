@@ -10,7 +10,6 @@ from logging import handlers
 from threading import Thread
 
 import cherrypy
-from bitstring import BitArray
 from cherrypy.lib.static import serve_file
 
 
@@ -137,8 +136,8 @@ class cIndex(object):
     def addSwitch(self, name, switchid):
         if name == "" or switchid == "":
             return "Invalid input."
-        b = BitArray(switchid)
-        self.switches[b.uint] = {'name': name, 'active': 0}
+        logging.info('id=' + str(int(switchid, 2)))
+        self.switches[switchid] = {'name': name, 'active': 0}
 
     @cherrypy.expose
     def setSwitch(self, switchid, active):
