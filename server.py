@@ -144,6 +144,7 @@ class cIndex(object):
 
     @cherrypy.expose
     def setSwitch(self, switchid, active):
+        logging.info("id=" + switchid)
         if not switchid in self.switches:
             return 'Invalid id.'
         self.switches[switchid]['active'] = int(active)
