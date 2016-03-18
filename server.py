@@ -145,7 +145,10 @@ class cIndex(object):
         self.switches[switchid]['active'] = int(active)
         call = './' + self.executor + ' ' + self.housecode + ' ' + switchid + ' ' + str(self.switches[switchid]['active'])
         logging.debug('Executing: ' + call)
-        os.system(call)
+
+        # Send command multiple times to achieve a higher success rate (noise on radio frequency).
+        for unused in range(0, 4):
+            os.system(call)
         return "1"
 
     @cherrypy.expose
