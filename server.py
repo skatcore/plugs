@@ -136,7 +136,6 @@ class cIndex(object):
     def addSwitch(self, name, switchid):
         if name == "" or switchid == "":
             return "Invalid input."
-        logging.info('id=' + str(int(switchid, 2)))
         self.switches[switchid] = {'name': name, 'active': 0}
 
     @cherrypy.expose
