@@ -147,9 +147,9 @@ class cIndex(object):
         self.switches[switchid]['active'] = int(active)
         call = './' + self.executor + ' ' + self.housecode + ' ' + switchid + ' ' + str(self.switches[switchid]['active'])
         logging.debug('Executing: ' + call)
-        for x in range(0, 5):
+        for x in range(1, 6):
             os.system(call)
-            time.sleep(0.1)
+            time.sleep(0.25)
         return "1"
 
     @cherrypy.expose

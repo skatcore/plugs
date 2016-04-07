@@ -161,10 +161,10 @@ int main(int argc, char** argv)
     INP_GPIO(17); // must use INP_GPIO before we can use OUT_GPIO
     OUT_GPIO(17);
     
-	//for(uint8_t i=0;i<4;i++){
+	for(uint8_t i=0;i<4;i++){
 		send_pc(hc,sc);
 		send_status(status);
 		send_sync();
-	//}
+	}
 	printf("Transmission finished.\n");
 }
