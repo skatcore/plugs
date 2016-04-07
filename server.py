@@ -39,7 +39,7 @@ conf = {
         'engine.autoreload.on': False,
         'engine.autoreload.frequency': 2,
         'server.socket_host': '0.0.0.0',  # Listen on any interface
-        'server.socket_port': 8080,
+        'server.socket_port': 80,
         #'server.ssl_module':'builtin',
         #'server.ssl_certificate': os.path.abspath("certs/server.crt"),
         #'server.ssl_private_key': os.path.abspath("certs/server.key"),
