@@ -149,7 +149,7 @@ class cIndex(object):
         logging.debug('Executing: ' + call)
         for x in range(0, 5):
             os.system(call)
-            time.sleep(0.5)
+            time.sleep(0.1)
         return "1"
 
     @cherrypy.expose
