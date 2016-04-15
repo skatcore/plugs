@@ -9,6 +9,10 @@ import time
 from logging import handlers
 from threading import Thread
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
 import cherrypy
 from cherrypy.lib.static import serve_file
 
@@ -26,7 +30,7 @@ def secureheaders():
 cherrypy.tools.secureheaders = \
     cherrypy.Tool('before_finalize', secureheaders, priority=60)
 
-Users = {'volker': 'volker'}
+# Users = {'volker': 'volker'}
 
 cherrypy.log.screen = False
 """
