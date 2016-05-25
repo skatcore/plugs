@@ -1,8 +1,9 @@
 package com.wat;
 
-import org.json.JSONArray;
+/*import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+*/
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -54,7 +55,7 @@ public class Main {
             }
         }*/
     }
-
+/*
     private static void processJSON(JSONObject jsonRecv) throws JSONException, IOException {
 
         switch (jsonRecv.getInt("type")) {
@@ -111,5 +112,5 @@ public class Main {
     private static void log(String s) {
         System.out.println(s);
     }
-
+*/
 }
