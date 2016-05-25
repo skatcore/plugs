@@ -15,10 +15,9 @@ public class Main {
     private static final int PORT = 5432;
     private static final String EXEC_FILE = "~plugs/Assignment-4/plug";
     private static final String SPACE = " ";
-    private static DataInputStream in;
     private static DataOutputStream out;
 
-    private static ArrayList<PlugDTO> plugs;
+    private static ArrayList<PlugDTO> plugs = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         log("Server started.");
@@ -35,7 +34,7 @@ public class Main {
             log("Waiting for client to connect...");
             Socket clientSocket = serverSocket.accept();
             log("Client connected!");
-            in = new DataInputStream(clientSocket.getInputStream());
+            DataInputStream in = new DataInputStream(clientSocket.getInputStream());
             out = new DataOutputStream(clientSocket.getOutputStream());
 
             try {
@@ -156,6 +155,7 @@ public class Main {
         final int i = getPlugIndex(houseCode, id);
         if (i != -1) {
             plugs.remove(i);
+            log("Removed plug: houseCode " + houseCode + ", id " + id + ".");
         }
     }
 
@@ -174,8 +174,10 @@ public class Main {
 
         if (i == -1) {
             plugs.add(newPlug);
+            log("Added plug: houseCode " + houseCode + ", id " + id + ", name " + name + ", status " + status + ".");
         } else {
             plugs.set(i, newPlug);
+            log("Updated plug: houseCode " + houseCode + ", id " + id + ", name " + name + ", status " + status + ".");
         }
     }
 
@@ -187,6 +189,7 @@ public class Main {
         for (PlugDTO plug : plugs) {
             array.put(plug.toJson());
         }
+        log("Sending plug list to client.");
         sendJson(json);
     }
 

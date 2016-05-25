@@ -23,14 +23,6 @@ class PlugDTO {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
     JSONObject toJson() {
         JSONObject res = new JSONObject();
         res.put("houseCode", houseCode);
