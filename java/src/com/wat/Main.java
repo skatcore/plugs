@@ -60,7 +60,7 @@ public class Main {
         String s;
         Process p;
         try {
-            final String command = EXEC_FILE + SPACE + housecode + SPACE + SPACE + (status ? "1" : "0");
+            final String command = EXEC_FILE + SPACE + housecode + SPACE + id + SPACE + (status ? "1" : "0"); // e.g. ./plugs 31 42 1 or ./plugs 31 42 0
             System.out.println("Executing: " + command);
             p = Runtime.getRuntime().exec(command);
 
