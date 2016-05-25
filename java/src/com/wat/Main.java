@@ -4,10 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 
 public class Main {
@@ -18,6 +15,20 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Server gestartet.");
+
+        String s;
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec("ls -aF");
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(p.getInputStream()));
+            while ((s = br.readLine()) != null)
+                System.out.println("line: " + s);
+            p.waitFor();
+            System.out.println("exit: " + p.exitValue());
+            p.destroy();
+        } catch (Exception ignored) {
+        }
 
         System.out.println("Server beendet.");
 
