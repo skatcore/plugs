@@ -9,26 +9,15 @@ import java.io.*;
 
 public class Main {
     private static final int PORT = 5432;
-
+    private static final String EXEC_FILE = "~plugs/Assignment-4/plug";
+    private static final String SPACE = " ";
     private static DataInputStream in;
     private static DataOutputStream out;
 
     public static void main(String[] args) throws IOException {
         System.out.println("Server gestartet.");
 
-        String s;
-        Process p;
-        try {
-            p = Runtime.getRuntime().exec("ls -aF");
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(p.getInputStream()));
-            while ((s = br.readLine()) != null)
-                System.out.println("line: " + s);
-            p.waitFor();
-            System.out.println("exit: " + p.exitValue());
-            p.destroy();
-        } catch (Exception ignored) {
-        }
+        setSwitch(42, 20, true);
 
         System.out.println("Server beendet.");
 
@@ -65,6 +54,25 @@ public class Main {
                 log("Unknown error, drop client.");
             }
         }*/
+    }
+
+    private static void setSwitch(int housecode, int id, boolean status) {
+        String s;
+        Process p;
+        try {
+            final String command = EXEC_FILE + SPACE + housecode + SPACE + SPACE + (status ? "1" : "0");
+            System.out.println("Executing: " + command);
+            p = Runtime.getRuntime().exec(command);
+
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(p.getInputStream()));
+            while ((s = br.readLine()) != null)
+                System.out.println("line: " + s);
+            p.waitFor();
+            System.out.println("exit: " + p.exitValue());
+            p.destroy();
+        } catch (Exception ignored) {
+        }
     }
 
     private static void processJSON(JSONObject jsonRecv) throws JSONException, IOException {
