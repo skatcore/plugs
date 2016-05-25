@@ -86,7 +86,7 @@ public class Main {
         }
     }
 
-    private static void processJSON(JSONObject json) throws IOException {
+    private static void processJSON(JSONObject json) throws IOException, InterruptedException {
         int houseCode;
         int id;
         int status;
@@ -123,7 +123,11 @@ public class Main {
                 id = json.getInt("id");
                 status = json.getInt("status");
 
-                setPlug(houseCode, id, status);
+                // Call several times to be more reliable.
+                for (int i = 0; i < 4; i++) {
+                    setPlug(houseCode, id, status);
+                    Thread.sleep(250);
+                }
                 break;
         }
     }
