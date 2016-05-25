@@ -1,16 +1,12 @@
 package com.wat;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 
 public class Main {
@@ -21,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Server gestartet.");
-        
+
         System.out.println("Server beendet.");
 
         /*
