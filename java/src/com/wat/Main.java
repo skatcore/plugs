@@ -5,6 +5,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 
 
 public class Main {
@@ -14,18 +18,19 @@ public class Main {
     private static DataInputStream in;
     private static DataOutputStream out;
 
+    private static ArrayList<PlugDTO> plugs;
+
     public static void main(String[] args) throws IOException {
-        System.out.println("Server gestartet.");
+        log("Server started.");
 
-        setSwitch(42, 20, true);
+        //setPlug(42, 20, 1);
 
-        System.out.println("Server beendet.");
 
-        /*
         ServerSocket serverSocket = new ServerSocket(PORT);
         log("Server: " + InetAddress.getLocalHost());
         log("Listening at port " +PORT +".");
 
+        //noinspection InfiniteLoopStatement
         while(true) {
             log("Waiting for client to connect...");
             Socket clientSocket = serverSocket.accept();
@@ -34,6 +39,7 @@ public class Main {
             out = new DataOutputStream(clientSocket.getOutputStream());
 
             try {
+                //noinspection InfiniteLoopStatement
                 while (true) {
                     log("Waiting for data (JSON).");
                     String s = in.readUTF();
@@ -43,9 +49,7 @@ public class Main {
                         log("Successfully received json: " +json.toString());
                         processJSON(json);
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        log("Received bad JSON format: " + s);
-                        System.exit(-42);
+                        log("Received bad JSON format, ignoring: " + s);
                     }
                 }
             } catch (EOFException e) {
@@ -53,14 +57,21 @@ public class Main {
             } catch (Exception e) {
                 log("Unknown error, drop client.");
             }
-        }*/
+        }
     }
 
-    private static void setSwitch(int housecode, int id, boolean status) {
+    /**
+     * Sets the given plug to the given status by calling a C executable.
+     *
+     * @param houseCode The house code.
+     * @param id        The id.
+     * @param status    The status, 0 or 1.
+     */
+    private static void setPlug(int houseCode, int id, int status) {
         String s;
         Process p;
         try {
-            final String command = EXEC_FILE + SPACE + housecode + SPACE + id + SPACE + (status ? "1" : "0"); // e.g. ./plugs 31 42 1 or ./plugs 31 42 0
+            final String command = EXEC_FILE + SPACE + houseCode + SPACE + id + SPACE + status; // e.g. ./plugs 31 42 1 or ./plugs 31 42 0
             System.out.println("Executing: " + command);
             p = Runtime.getRuntime().exec(command);
 
@@ -71,59 +82,116 @@ public class Main {
             p.waitFor();
             System.out.println("exit: " + p.exitValue());
             p.destroy();
-        } catch (Exception ignored) {
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private static void processJSON(JSONObject jsonRecv) throws JSONException, IOException {
+    private static void processJSON(JSONObject json) throws IOException {
+        int houseCode;
+        int id;
+        int status;
+        String name;
 
-        switch (jsonRecv.getInt("type")) {
-            case 0:
-                sendMatchStatus();
+        switch (json.getString("type")) {
+            case "getPlugs":
+                // No data expected.
+                sendPlugList();
                 break;
-            case 1:
+
+            case "addOrUpdatePlug":
+                houseCode = json.getInt("houseCode");
+                id = json.getInt("id");
+                name = json.getString("name");
+                if (json.has("status")) {
+                    status = json.getInt("status");
+                } else {
+                    status = 0;
+                }
+
+                addOrUpdatePlug(houseCode, id, name, status);
+                break;
+
+            case "removePlug":
+                houseCode = json.getInt("houseCode");
+                id = json.getInt("id");
+
+                removePlug(houseCode, id);
+                break;
+
+            case "setPlug":
+                houseCode = json.getInt("houseCode");
+                id = json.getInt("id");
+                status = json.getInt("status");
+
+                setPlug(houseCode, id, status);
                 break;
         }
     }
 
-
-    private static void sendMatchStatus() throws JSONException, IOException {
-        JSONObject res = new JSONObject();
-
-        res.put("type", 42);
-        res.put("status", 1); // Match running.
-        JSONArray jsonArray = new JSONArray();
-        final String[] names = {"Yolo", "Swag", "Lol", "Obey"};
-        for (String s : names) {
-            JSONObject jsonName = new JSONObject();
-            jsonName.put("name", s);
-            jsonArray.put(jsonName);
+    /**
+     * Searches for the given plug.
+     *
+     * @param houseCode The house code.
+     * @param id        The id.
+     * @return The index in plugs list, or -1 if not present in list.
+     */
+    private static int getPlugIndex(int houseCode, int id) {
+        for (int i = 0; i < plugs.size(); i++) {
+            final PlugDTO plug = plugs.get(i);
+            if (plug.getHouseCode() == houseCode && plug.getId() == id) {
+                return i; // Plug found.
+            }
         }
-        res.put("names", jsonArray);
-        res.put("starttime", 42);
+        return -1; // Plug not in list.
+    }
 
-        res.put("goalcountblue", 2);
-        JSONArray goalsBlue = new JSONArray();
-        JSONObject goalBlue1 = new JSONObject();
-        goalBlue1.put("timestamp", 44);
-        JSONObject goalBlue2 = new JSONObject();
-        goalBlue2.put("timestamp", 500);
-        goalsBlue.put(goalBlue1);
-        goalsBlue.put(goalBlue2);
-        res.put("timestampsblue", goalsBlue);
+    /**
+     * Removes the given plug, if present.
+     *
+     * @param houseCode The house code.
+     * @param id        The id.
+     */
+    private static void removePlug(int houseCode, int id) {
+        final int i = getPlugIndex(houseCode, id);
+        if (i != -1) {
+            plugs.remove(i);
+        }
+    }
 
-        res.put("goalcountred", 1);
-        JSONArray goalsRed = new JSONArray();
-        JSONObject goalRed1 = new JSONObject();
-        goalRed1.put("timestamp", 255);
-        goalsRed.put(goalRed1);
-        res.put("timestampsred", goalsRed);
+    /**
+     * Adds the given plug, or updates if present.
+     *
+     * @param houseCode The house code.
+     * @param id        The id.
+     * @param name      The name.
+     * @param status    The status, 0 or 1.
+     */
+    private static void addOrUpdatePlug(int houseCode, int id, String name, int status) {
+        final int i = getPlugIndex(houseCode, id);
 
-        sendJson(res);
+        PlugDTO newPlug = new PlugDTO(houseCode, id, name, status);
+
+        if (i == -1) {
+            plugs.add(newPlug);
+        } else {
+            plugs.set(i, newPlug);
+        }
+    }
+
+    private static void sendPlugList() throws IOException {
+        JSONObject json = new JSONObject();
+        json.put("type", "getPlugs");
+
+        JSONArray array = new JSONArray();
+        for (PlugDTO plug : plugs) {
+            array.put(plug.toJson());
+        }
+        sendJson(json);
     }
 
     private static void sendJson(JSONObject json) throws IOException {
-        log("Send JSON: " +json.toString());
+        log("Sending JSON: " + json.toString());
         out.writeUTF(json.toString());
         out.flush();
     }
