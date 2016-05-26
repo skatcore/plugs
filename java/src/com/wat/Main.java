@@ -128,6 +128,7 @@ public class Main {
                 }
 
                 addOrUpdatePlug(houseCode, id, name, status);
+                sendPlugList();
                 break;
 
             case "removePlug":
@@ -135,6 +136,7 @@ public class Main {
                 id = json.getInt("id");
 
                 removePlug(houseCode, id);
+                sendPlugList();
                 break;
 
             case "setPlug":
