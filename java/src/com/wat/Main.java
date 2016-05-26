@@ -30,9 +30,9 @@ public class Main {
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
         Enumeration<InetAddress> nifAddresses = nif.getInetAddresses();
 
-        log("Address: " + nifAddresses.nextElement().toString());
 
         InetAddress inetAddress = nifAddresses.nextElement();
+        log("ADDRESS = " + inetAddress.toString());
         ServerSocket serverSocket = new ServerSocket(PORT, 20, inetAddress);
 
         log("Server: " + InetAddress.getLocalHost());
