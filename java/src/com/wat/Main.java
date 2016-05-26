@@ -117,7 +117,7 @@ public class Main {
                 sendPlugList();
                 break;
 
-            case "addOrUpdatePlug":
+            case "addPlug":
                 houseCode = json.getInt("houseCode");
                 id = json.getInt("id");
                 name = json.getString("name");
