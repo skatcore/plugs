@@ -36,6 +36,7 @@ public class Main {
         ServerSocket serverSocket = new ServerSocket(PORT, 20, inetAddress);
 
         log("Server: " + InetAddress.getLocalHost());
+        log("GET INET ADDRESS: " + serverSocket.getInetAddress());
         log("Listening at port " +PORT +".");
 
         //noinspection InfiniteLoopStatement
