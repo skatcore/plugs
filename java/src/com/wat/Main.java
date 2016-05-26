@@ -27,7 +27,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         log("Server started.");
 
-        //setPlug(42, 20, 1);
+        //XXX Add generated plugs.
+        plugs.add(new PlugDTO(31, 8, "Wohnzimmer", 0));
+        plugs.add(new PlugDTO(31, 4, "Lampe", 1));
+        plugs.add(new PlugDTO(31, 20, "TV", 0));
 
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
@@ -139,10 +142,18 @@ public class Main {
                 id = json.getInt("id");
                 status = json.getInt("status");
 
-                // Call several times to be more reliable.
-                for (int i = 0; i < 4; i++) {
-                    setPlug(houseCode, id, status);
-                    Thread.sleep(250);
+
+                int i = getPlugIndex(houseCode, id);
+                if (i != -1) {
+                    // Send updated list to client.
+                    plugs.get(i).changeStatus();
+                    sendPlugList();
+
+                    // Call several times to be more reliable.
+                    for (int k = 0; k < 4; k++) {
+                        setPlug(houseCode, id, status);
+                        Thread.sleep(250);
+                    }
                 }
                 break;
         }

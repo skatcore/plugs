@@ -23,6 +23,10 @@ class PlugDTO {
         return id;
     }
 
+    void changeStatus() {
+        this.status = 1 - this.status;
+    }
+
     JSONObject toJson() {
         JSONObject res = new JSONObject();
         res.put("houseCode", houseCode);
