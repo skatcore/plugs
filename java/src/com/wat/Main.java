@@ -29,6 +29,9 @@ public class Main {
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
         Enumeration<InetAddress> nifAddresses = nif.getInetAddresses();
+        while (nifAddresses.hasMoreElements()) {
+            log("Address: " + nifAddresses.nextElement().toString());
+        }
         InetAddress inetAddress = nifAddresses.nextElement();
         ServerSocket serverSocket = new ServerSocket(PORT, 20, inetAddress);
 
