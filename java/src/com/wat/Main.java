@@ -6,9 +6,11 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 
 public class Main {
@@ -25,7 +27,11 @@ public class Main {
         //setPlug(42, 20, 1);
 
 
-        ServerSocket serverSocket = new ServerSocket(PORT);
+        NetworkInterface nif = NetworkInterface.getByName("wlan0");
+        Enumeration<InetAddress> nifAddresses = nif.getInetAddresses();
+        InetAddress inetAddress = nifAddresses.nextElement();
+        ServerSocket serverSocket = new ServerSocket(PORT, 20, inetAddress);
+
         log("Server: " + InetAddress.getLocalHost());
         log("Listening at port " +PORT +".");
 
