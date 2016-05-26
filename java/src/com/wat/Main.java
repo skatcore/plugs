@@ -193,6 +193,7 @@ public class Main {
         for (PlugDTO plug : plugs) {
             array.put(plug.toJson());
         }
+        json.put("plugs", array);
         log("Sending plug list to client.");
         sendJson(json);
     }
