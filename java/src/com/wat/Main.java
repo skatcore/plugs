@@ -150,7 +150,7 @@ public class Main {
                     sendPlugList();
 
                     // Call several times to be more reliable.
-                    for (int k = 0; k < 6; k++) {
+                    for (int k = 0; k < 4; k++) {
                         setPlug(houseCode, id, status);
                         Thread.sleep(50);
                     }
