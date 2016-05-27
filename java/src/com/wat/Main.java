@@ -22,8 +22,6 @@ public class Main {
     private static ArrayList<PlugDTO> plugs = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        log("Server started.");
-
         readPlugsFromDisk();
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
