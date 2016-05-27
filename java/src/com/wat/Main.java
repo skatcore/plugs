@@ -4,10 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
@@ -38,7 +35,6 @@ public class Main {
 
 
         InetAddress inetAddress = nifAddresses.nextElement();
-        log("ADDRESS = " + inetAddress.toString());
         ServerSocket serverSocket = new ServerSocket(PORT, 20, inetAddress);
         log("Server: " + serverSocket.getInetAddress());
 
@@ -82,9 +78,9 @@ public class Main {
      * @param status    The status, 0 or 1.
      */
     private static void setPlug(int houseCode, int id, int status) {
-        final String command = EXEC_FILE + SPACE + houseCode + SPACE + id + SPACE + status;
-        log("Simulated command: " + command);
-        /*
+        //final String command = EXEC_FILE + SPACE + houseCode + SPACE + id + SPACE + status;
+        //log("Simulated command: " + command);
+
         String s;
         Process p;
         try {
@@ -102,7 +98,7 @@ public class Main {
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
-        */
+
     }
 
     private static void processJSON(JSONObject json) throws IOException, InterruptedException {
