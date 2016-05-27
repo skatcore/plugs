@@ -15,7 +15,7 @@ import java.util.Enumeration;
 
 public class Main {
     private static final int PORT = 5432;
-    private static final String EXEC_FILE = "~plugs/Assignment-4/plug";
+    private static final String EXEC_FILE = "/home/pi/plugs/Assignment-4/plug";
     private static final String SPACE = " ";
     private static DataOutputStream out;
 
@@ -84,7 +84,7 @@ public class Main {
         String s;
         Process p;
         try {
-            final String command = EXEC_FILE + SPACE + houseCode + SPACE + id + SPACE + status; // e.g. ./plugs 31 42 1 or ./plugs 31 42 0
+            final String command = "sudo " + EXEC_FILE + SPACE + houseCode + SPACE + id + SPACE + status; // e.g. ./plug 31 42 1 or ./plug 31 42 0
             System.out.println("Executing: " + command);
             p = Runtime.getRuntime().exec(command);
 
