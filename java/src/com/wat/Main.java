@@ -28,21 +28,22 @@ public class Main {
         new Thread(() -> {
             while (System.nanoTime() - startTime < 20000000000L) {
                 try {
-                    Thread.sleep(600000L);
+                    Thread.sleep(2000L/*600000L*/);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
-                log("(20s) TIME IS UP!");
             }
+
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
+            log("(20s) TIME IS UP!");
         }).start();
 
         readPlugsFromDisk();
