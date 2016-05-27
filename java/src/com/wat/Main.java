@@ -18,10 +18,13 @@ public class Main {
     private static final String EXEC_FILE = "/home/pi/plugs/Assignment-4/plug";
     private static final String SPACE = " ";
     private static DataOutputStream out;
+    private static long startTime;
 
     private static ArrayList<PlugDTO> plugs = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
+        startTime = System.nanoTime();
+
         readPlugsFromDisk();
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
@@ -36,6 +39,11 @@ public class Main {
 
         //noinspection InfiniteLoopStatement
         while(true) {
+            long currentTime = System.nanoTime();
+            if (currentTime - startTime > 20000000000L /*1000l*1000l*1000l*3600l*24l*/ /* 24 hours */) {
+                log("(20s) TIME IS UP!");
+            }
+
             log("Waiting for client to connect...");
             Socket clientSocket = serverSocket.accept();
             log("Client connected!");
