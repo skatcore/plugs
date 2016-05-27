@@ -91,9 +91,11 @@ public class Main {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(p.getInputStream()));
             while ((s = br.readLine()) != null)
-                System.out.println("line: " + s);
+                System.out.println("-->: " + s);
             p.waitFor();
-            System.out.println("exit: " + p.exitValue());
+            if (p.exitValue() != 0) {
+                System.out.println("exit: " + p.exitValue());
+            }
             p.destroy();
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
