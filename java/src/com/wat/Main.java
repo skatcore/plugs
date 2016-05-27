@@ -25,6 +25,26 @@ public class Main {
     public static void main(String[] args) throws IOException {
         startTime = System.nanoTime();
 
+        new Thread(() -> {
+            while (System.nanoTime() - startTime < 20000000000L) {
+                try {
+                    Thread.sleep(600000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+                log("(20s) TIME IS UP!");
+            }
+        }).start();
+
         readPlugsFromDisk();
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
