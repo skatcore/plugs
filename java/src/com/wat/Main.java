@@ -16,36 +16,12 @@ import java.util.Enumeration;
 public class Main {
     private static final int PORT = 5432;
     private static final String EXEC_FILE = "/home/pi/plugs/Assignment-4/plug";
-    private static final String EXEC_RESTART = "/home/pi/plugs/Assignment-4/java/src/restart.sh &"; // "&" for running in background, so we can shutdown this server instance
     private static final String SPACE = " ";
     private static DataOutputStream out;
-    private static long startTime;
 
     private static ArrayList<PlugDTO> plugs = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        startTime = System.nanoTime();
-
-        new Thread(() -> {
-            while (System.nanoTime() - startTime < 20000000000L) {
-                try {
-                    Thread.sleep(2000L/*600000L*/);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            log("Shutting down server. System will schedule a restart soon.");
-
-            try {
-                System.out.println("Executing: " + EXEC_RESTART);
-                Runtime.getRuntime().exec(EXEC_RESTART);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.exit(0);
-        }).start();
-
         readPlugsFromDisk();
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
@@ -60,11 +36,6 @@ public class Main {
 
         //noinspection InfiniteLoopStatement
         while(true) {
-            long currentTime = System.nanoTime();
-            if (currentTime - startTime > 20000000000L /*1000l*1000l*1000l*3600l*24l*/ /* 24 hours */) {
-                log("(20s) TIME IS UP!");
-            }
-
             log("Waiting for client to connect...");
             Socket clientSocket = serverSocket.accept();
             log("Client connected!");
