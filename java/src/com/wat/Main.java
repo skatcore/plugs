@@ -29,6 +29,8 @@ public class Main {
         plugs.add(new PlugDTO(31, 4, "Lampe", 1));
         plugs.add(new PlugDTO(31, 20, "TV", 0));
 
+        savePlugsToDisk();
+
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
         Enumeration<InetAddress> nifAddresses = nif.getInetAddresses();
@@ -235,4 +237,18 @@ public class Main {
         System.out.println(s);
     }
 
+    private static void savePlugsToDisk() {
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (PlugDTO plug : plugs) {
+            array.put(plug.toJson());
+        }
+        json.put("plugs", array);
+
+        try (FileWriter file = new FileWriter("plugs.txt")) {
+            file.write(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
