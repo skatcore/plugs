@@ -24,13 +24,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         log("Server started.");
 
-        //XXX Add generated plugs.
-        plugs.add(new PlugDTO(31, 8, "Wohnzimmer", 0));
-        plugs.add(new PlugDTO(31, 4, "Lampe", 1));
-        plugs.add(new PlugDTO(31, 20, "TV", 0));
-
-        savePlugsToDisk();
-
+        readPlugsFromDisk();
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
         Enumeration<InetAddress> nifAddresses = nif.getInetAddresses();
@@ -129,6 +123,7 @@ public class Main {
 
                 addOrUpdatePlug(houseCode, id, name, status);
                 sendPlugList();
+                savePlugsToDisk();
                 break;
 
             case "removePlug":
@@ -137,6 +132,7 @@ public class Main {
 
                 removePlug(houseCode, id);
                 sendPlugList();
+                savePlugsToDisk();
                 break;
 
             case "setPlug":
@@ -245,10 +241,29 @@ public class Main {
         }
         json.put("plugs", array);
 
-        try (FileWriter file = new FileWriter("plugs.txt")) {
+        try (FileWriter file = new FileWriter("plugs.txt", false)) {
             file.write(json.toString());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void readPlugsFromDisk() {
+        plugs.clear();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("plugs.txt"))) {
+            String line;
+            if ((line = reader.readLine()) != null) {
+                JSONObject json = new JSONObject(line);
+                JSONArray array = json.getJSONArray("plugs");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject jsonPlug = array.getJSONObject(i);
+                    plugs.add(new PlugDTO(jsonPlug));
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Could not read plugs from \"plugs.txt\".");
         }
     }
 }
