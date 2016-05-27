@@ -16,6 +16,7 @@ import java.util.Enumeration;
 public class Main {
     private static final int PORT = 5432;
     private static final String EXEC_FILE = "/home/pi/plugs/Assignment-4/plug";
+    private static final String EXEC_RESTART = "/home/pi/plugs/Assignment-4/java/src/restart.sh &"; // "&" for running in background, so we can shutdown this server instance
     private static final String SPACE = " ";
     private static DataOutputStream out;
     private static long startTime;
@@ -34,16 +35,15 @@ public class Main {
                 }
             }
 
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
-            log("(20s) TIME IS UP!");
+            log("Shutting down server. System will schedule a restart soon.");
+
+            try {
+                System.out.println("Executing: " + EXEC_RESTART);
+                Runtime.getRuntime().exec(EXEC_RESTART);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.exit(0);
         }).start();
 
         readPlugsFromDisk();
@@ -101,9 +101,6 @@ public class Main {
      * @param status    The status, 0 or 1.
      */
     private static void setPlug(int houseCode, int id, int status) {
-        //final String command = EXEC_FILE + SPACE + houseCode + SPACE + id + SPACE + status;
-        //log("Simulated command: " + command);
-
         String s;
         Process p;
         try {
