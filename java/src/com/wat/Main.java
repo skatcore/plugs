@@ -144,6 +144,7 @@ public class Main {
                     // Send updated list to client.
                     plugs.get(i).changeStatus();
                     sendPlugList();
+                    savePlugsToDisk();
 
                     // Call several times to be more reliable.
                     for (int k = 0; k < 4; k++) {
@@ -252,6 +253,8 @@ public class Main {
         try (BufferedReader reader = new BufferedReader(new FileReader("plugs.txt"))) {
             String line;
             if ((line = reader.readLine()) != null) {
+                log("Successfully loaded plugs:");
+                log(line);
                 JSONObject json = new JSONObject(line);
                 JSONArray array = json.getJSONArray("plugs");
                 for (int i = 0; i < array.length(); i++) {
@@ -261,7 +264,7 @@ public class Main {
             }
 
         } catch (IOException e) {
-            System.out.println("Could not read plugs from \"plugs.txt\".");
+            log("Could not read plugs from \"plugs.txt\".");
         }
     }
 }
