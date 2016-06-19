@@ -25,11 +25,18 @@ public class Main {
         readPlugsFromDisk();
 
         NetworkInterface nif = NetworkInterface.getByName("wlan0");
-        Enumeration<InetAddress> nifAddresses = nif.getInetAddresses();
+        InetAddress inetAddress;
+        ServerSocket serverSocket;
+        if (nif != null) {
+            Enumeration<InetAddress> nifAddresses = nif.getInetAddresses();
+            inetAddress = nifAddresses.nextElement();
+            serverSocket = new ServerSocket(PORT, 5, inetAddress);
+            log("Starting server on WIFI.");
+        } else {
+            serverSocket = new ServerSocket(PORT, 5);
+            log("Starting server on ETHERNET CABLE.");
+        }
 
-
-        InetAddress inetAddress = nifAddresses.nextElement();
-        ServerSocket serverSocket = new ServerSocket(PORT, 20, inetAddress);
         log("Server: " + serverSocket.getInetAddress());
 
         log("Listening at port " +PORT +".");
